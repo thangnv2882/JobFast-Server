@@ -47,7 +47,7 @@ public class AccountController {
     // Create input
     Input input = new Input(idAccount);
     // Get output
-    GetAccountOutput output = accountService.getAccountById(input);
+    GetAccountOutput output = accountService.findAccountById(input);
     // Return output
     return VsResponseUtil.ok(output);
   }
@@ -58,7 +58,7 @@ public class AccountController {
     // Create input
     GetAccountByEmailInput input = new GetAccountByEmailInput(email);
     // Get output
-    GetAccountOutput output = accountService.getAccountByEmail(input);
+    GetAccountOutput output = accountService.findAccountByEmail(input);
     // Return output
     return VsResponseUtil.ok(output);
   }

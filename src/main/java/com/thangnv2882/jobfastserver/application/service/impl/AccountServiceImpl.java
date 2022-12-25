@@ -4,7 +4,9 @@ import com.thangnv2882.jobfastserver.application.constants.AccountConstant;
 import com.thangnv2882.jobfastserver.application.constants.CommonConstant;
 import com.thangnv2882.jobfastserver.application.constants.MessageConstant;
 import com.thangnv2882.jobfastserver.application.dai.IAccountRepository;
-import com.thangnv2882.jobfastserver.application.input.account.*;
+import com.thangnv2882.jobfastserver.application.input.account.ChangeAvatarInput;
+import com.thangnv2882.jobfastserver.application.input.account.GetAccountByEmailInput;
+import com.thangnv2882.jobfastserver.application.input.account.UpdateAccountInput;
 import com.thangnv2882.jobfastserver.application.input.commons.FindAccountInput;
 import com.thangnv2882.jobfastserver.application.input.commons.Input;
 import com.thangnv2882.jobfastserver.application.output.GetAccountOutput;
@@ -41,21 +43,21 @@ public class AccountServiceImpl implements IAccountService {
 
   @Override
   public GetListAccountOutput findAllAccount(FindAccountInput findAccountInput) {
-    int total = accountRepository.countAccountByAccountType(findAccountInput, Boolean.FALSE, Boolean.TRUE);
+    Long total = accountRepository.countAccount(findAccountInput, Boolean.FALSE, Boolean.TRUE);
 
-    PagingMeta meta = new PagingMeta((long) total, findAccountInput.getPageNum(), findAccountInput.getPageSize(),
-        findAccountInput.getSortType(), findAccountInput.getSortBy());
+    PagingMeta meta = new PagingMeta(total, findAccountInput.getPageNum(), findAccountInput.getPageSize(),
+        findAccountInput.getSortBy(), findAccountInput.getSortType());
 
-    List<Account> accounts = accountRepository.findAllByAccountType(findAccountInput,
+    List<Account> accounts = accountRepository.findAll(findAccountInput,
         PageRequest.of(findAccountInput.getPageNum(),
-        findAccountInput.getPageSize()), Sort.by(Sort.Direction.valueOf(findAccountInput.getSortType()),
-        findAccountInput.getSortBy()), Boolean.FALSE, Boolean.TRUE);
+            findAccountInput.getPageSize()), Sort.by(Sort.Direction.valueOf(findAccountInput.getSortType()),
+            findAccountInput.getSortBy()), Boolean.FALSE, Boolean.TRUE);
 
     return new GetListAccountOutput(accounts, meta);
   }
 
   @Override
-  public GetAccountOutput getAccountById(Input input) {
+  public GetAccountOutput findAccountById(Input input) {
     Optional<Account> account = accountRepository.findById(input.getId());
     if (account.isEmpty()) {
       throw new VsException(MessageConstant.ACCOUNT_NOT_EXISTS);
@@ -68,7 +70,7 @@ public class AccountServiceImpl implements IAccountService {
   }
 
   @Override
-  public GetAccountOutput getAccountByEmail(GetAccountByEmailInput input) {
+  public GetAccountOutput findAccountByEmail(GetAccountByEmailInput input) {
     Account account = accountRepository.findByEmail(input.getEmail());
     if (account == null) {
       throw new VsException(MessageConstant.ACCOUNT_NOT_EXISTS);

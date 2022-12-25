@@ -18,9 +18,9 @@ public class PagingMeta {
 
   private Integer pageSize;
 
-  private String sortType;
-
   private String sortBy;
+
+  private String sortType;
 
   private Integer totalPage;
 
