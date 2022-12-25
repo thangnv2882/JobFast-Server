@@ -8,9 +8,9 @@ import com.thangnv2882.jobfastserver.application.dai.IVerificationTokenRepositor
 import com.thangnv2882.jobfastserver.application.event.RegistrationCompleteEvent;
 import com.thangnv2882.jobfastserver.application.event.ResetPasswordCompleteEvent;
 import com.thangnv2882.jobfastserver.application.input.auth.AuthenticationRequest;
-import com.thangnv2882.jobfastserver.application.input.auth.UpdatePasswordInput;
 import com.thangnv2882.jobfastserver.application.input.auth.SignUpInput;
-import com.thangnv2882.jobfastserver.application.output.AuthenticationOutput;
+import com.thangnv2882.jobfastserver.application.input.auth.UpdatePasswordInput;
+import com.thangnv2882.jobfastserver.application.output.account.AuthenticationOutput;
 import com.thangnv2882.jobfastserver.application.output.common.Output;
 import com.thangnv2882.jobfastserver.application.service.IAuthService;
 import com.thangnv2882.jobfastserver.application.utils.JwtTokenUtil;

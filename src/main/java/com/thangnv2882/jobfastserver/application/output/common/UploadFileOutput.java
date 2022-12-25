@@ -1,4 +1,4 @@
-package com.thangnv2882.jobfastserver.application.output;
+package com.thangnv2882.jobfastserver.application.output.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

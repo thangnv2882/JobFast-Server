@@ -1,9 +1,9 @@
 package com.thangnv2882.jobfastserver.application.service;
 
 import com.thangnv2882.jobfastserver.application.input.auth.AuthenticationRequest;
-import com.thangnv2882.jobfastserver.application.input.auth.UpdatePasswordInput;
 import com.thangnv2882.jobfastserver.application.input.auth.SignUpInput;
-import com.thangnv2882.jobfastserver.application.output.AuthenticationOutput;
+import com.thangnv2882.jobfastserver.application.input.auth.UpdatePasswordInput;
+import com.thangnv2882.jobfastserver.application.output.account.AuthenticationOutput;
 import com.thangnv2882.jobfastserver.application.output.common.Output;
 import com.thangnv2882.jobfastserver.domain.entity.Account;
 

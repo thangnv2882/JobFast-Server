@@ -1,7 +1,7 @@
-package com.thangnv2882.jobfastserver.application.output;
+package com.thangnv2882.jobfastserver.application.output.category;
 
 import com.thangnv2882.jobfastserver.application.output.common.PagingMeta;
-import com.thangnv2882.jobfastserver.domain.entity.CV;
+import com.thangnv2882.jobfastserver.domain.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,9 +13,9 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetListCVOutput {
+public class GetListCategoryOutput {
 
-  private List<CV> cvs;
+  private List<Category> categories;
 
   private PagingMeta meta;
 

@@ -8,10 +8,10 @@ import com.thangnv2882.jobfastserver.application.input.account.GetAccountByEmail
 import com.thangnv2882.jobfastserver.application.input.account.UpdateAccountInput;
 import com.thangnv2882.jobfastserver.application.input.commons.FindAccountInput;
 import com.thangnv2882.jobfastserver.application.input.commons.Input;
-import com.thangnv2882.jobfastserver.application.output.GetAccountOutput;
-import com.thangnv2882.jobfastserver.application.output.GetListAccountOutput;
-import com.thangnv2882.jobfastserver.application.output.UploadFileOutput;
+import com.thangnv2882.jobfastserver.application.output.account.GetAccountOutput;
+import com.thangnv2882.jobfastserver.application.output.account.GetListAccountOutput;
 import com.thangnv2882.jobfastserver.application.output.common.Output;
+import com.thangnv2882.jobfastserver.application.output.common.UploadFileOutput;
 import com.thangnv2882.jobfastserver.application.service.IAccountService;
 import com.thangnv2882.jobfastserver.application.utils.UrlUtil;
 import io.swagger.v3.oas.annotations.Operation;
