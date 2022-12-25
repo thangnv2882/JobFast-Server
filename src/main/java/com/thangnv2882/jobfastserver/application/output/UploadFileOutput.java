@@ -9,10 +9,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Output {
+public class UploadFileOutput {
 
   private boolean status;
 
   private String message;
+
+  private String path;
 
 }

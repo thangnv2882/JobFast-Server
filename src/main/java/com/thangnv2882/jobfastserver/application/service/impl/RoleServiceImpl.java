@@ -4,7 +4,7 @@ import com.thangnv2882.jobfastserver.application.constants.CommonConstant;
 import com.thangnv2882.jobfastserver.application.constants.MessageConstant;
 import com.thangnv2882.jobfastserver.application.dai.IRoleRepository;
 import com.thangnv2882.jobfastserver.application.input.role.CreateRoleInput;
-import com.thangnv2882.jobfastserver.application.output.Output;
+import com.thangnv2882.jobfastserver.application.output.common.Output;
 import com.thangnv2882.jobfastserver.application.service.IRoleService;
 import com.thangnv2882.jobfastserver.config.exception.NotFoundException;
 import com.thangnv2882.jobfastserver.domain.entity.Role;

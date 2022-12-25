@@ -28,8 +28,6 @@ public class MyUserDetailsService implements UserDetailsService {
     }
     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
     account.getRoles().forEach(role -> {
-      System.out.println("Role cua " + account.getEmail() + ": " + role.getRoleName());
-
       authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
     });
     return new org.springframework.security.core.userdetails.User(account.getEmail(), account.getPassword(), authorities);

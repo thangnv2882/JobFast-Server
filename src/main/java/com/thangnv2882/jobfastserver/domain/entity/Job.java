@@ -32,6 +32,9 @@ public class Job extends AbstractAuditingEntity {
     private String jobRequirements;
 
     @Nationalized
+    private String location;
+
+    @Nationalized
     private String timeUp;
 
     @Nationalized
