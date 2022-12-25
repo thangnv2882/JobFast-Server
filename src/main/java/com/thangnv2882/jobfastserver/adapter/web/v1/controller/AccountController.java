@@ -3,12 +3,15 @@ package com.thangnv2882.jobfastserver.adapter.web.v1.controller;
 import com.thangnv2882.jobfastserver.adapter.web.base.RestApiV1;
 import com.thangnv2882.jobfastserver.adapter.web.base.VsResponseUtil;
 import com.thangnv2882.jobfastserver.application.constants.UrlConstant;
-import com.thangnv2882.jobfastserver.application.input.account.*;
+import com.thangnv2882.jobfastserver.application.input.account.ChangeAvatarInput;
+import com.thangnv2882.jobfastserver.application.input.account.GetAccountByEmailInput;
+import com.thangnv2882.jobfastserver.application.input.account.UpdateAccountInput;
 import com.thangnv2882.jobfastserver.application.input.commons.FindAccountInput;
+import com.thangnv2882.jobfastserver.application.input.commons.Input;
 import com.thangnv2882.jobfastserver.application.output.GetAccountOutput;
 import com.thangnv2882.jobfastserver.application.output.GetListAccountOutput;
-import com.thangnv2882.jobfastserver.application.output.common.Output;
 import com.thangnv2882.jobfastserver.application.output.UploadFileOutput;
+import com.thangnv2882.jobfastserver.application.output.common.Output;
 import com.thangnv2882.jobfastserver.application.service.IAccountService;
 import com.thangnv2882.jobfastserver.application.utils.UrlUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,7 +45,7 @@ public class AccountController {
   @GetMapping(UrlConstant.Account.GET_BY_ID)
   public ResponseEntity<?> getAccountById(@PathVariable("idAccount") Long idAccount) {
     // Create input
-    GetAccountByIdInput input = new GetAccountByIdInput(idAccount);
+    Input input = new Input(idAccount);
     // Get output
     GetAccountOutput output = accountService.getAccountById(input);
     // Return output
@@ -73,7 +76,7 @@ public class AccountController {
   @DeleteMapping(UrlConstant.Account.DELETE)
   public ResponseEntity<?> deleteAccount(@PathVariable("idAccount") Long idAccount) {
     // Create input
-    DeleteAccountInput input = new DeleteAccountInput(idAccount);
+    Input input = new Input(idAccount);
     // Get output
     Output output = accountService.deleteAccount(input);
     // Return output

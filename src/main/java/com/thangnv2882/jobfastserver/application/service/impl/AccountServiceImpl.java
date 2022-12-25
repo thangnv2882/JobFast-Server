@@ -6,6 +6,7 @@ import com.thangnv2882.jobfastserver.application.constants.MessageConstant;
 import com.thangnv2882.jobfastserver.application.dai.IAccountRepository;
 import com.thangnv2882.jobfastserver.application.input.account.*;
 import com.thangnv2882.jobfastserver.application.input.commons.FindAccountInput;
+import com.thangnv2882.jobfastserver.application.input.commons.Input;
 import com.thangnv2882.jobfastserver.application.output.GetAccountOutput;
 import com.thangnv2882.jobfastserver.application.output.GetListAccountOutput;
 import com.thangnv2882.jobfastserver.application.output.UploadFileOutput;
@@ -54,7 +55,7 @@ public class AccountServiceImpl implements IAccountService {
   }
 
   @Override
-  public GetAccountOutput getAccountById(GetAccountByIdInput input) {
+  public GetAccountOutput getAccountById(Input input) {
     Optional<Account> account = accountRepository.findById(input.getId());
     if (account.isEmpty()) {
       throw new VsException(MessageConstant.ACCOUNT_NOT_EXISTS);
@@ -94,7 +95,7 @@ public class AccountServiceImpl implements IAccountService {
   }
 
   @Override
-  public Output deleteAccount(DeleteAccountInput input) {
+  public Output deleteAccount(Input input) {
     Optional<Account> account = accountRepository.findById(input.getId());
     AuthServiceImpl.checkAccountExists(account);
     if (account.get().getEmail().compareTo(SecurityUtil.getCurrentAccountLogin()) == 0) {
