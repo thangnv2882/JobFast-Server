@@ -11,7 +11,7 @@ import com.thangnv2882.jobfastserver.application.input.auth.AuthenticationReques
 import com.thangnv2882.jobfastserver.application.input.auth.UpdatePasswordInput;
 import com.thangnv2882.jobfastserver.application.input.auth.SignUpInput;
 import com.thangnv2882.jobfastserver.application.output.AuthenticationOutput;
-import com.thangnv2882.jobfastserver.application.output.Output;
+import com.thangnv2882.jobfastserver.application.output.common.Output;
 import com.thangnv2882.jobfastserver.application.service.IAuthService;
 import com.thangnv2882.jobfastserver.application.utils.JwtTokenUtil;
 import com.thangnv2882.jobfastserver.application.utils.UrlUtil;
@@ -153,7 +153,6 @@ public class AuthServiceImpl implements IAuthService {
     if (verificationToken == null) {
       throw new NotFoundException(MessageConstant.INVALID_TOKEN);
     }
-
 
     Account account = modelMapper.map(verificationToken.getAccount(), Account.class);
 

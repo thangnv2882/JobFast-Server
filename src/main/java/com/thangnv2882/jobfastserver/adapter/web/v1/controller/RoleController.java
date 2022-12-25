@@ -5,7 +5,7 @@ import com.thangnv2882.jobfastserver.adapter.web.base.RestApiV1;
 import com.thangnv2882.jobfastserver.adapter.web.base.VsResponseUtil;
 import com.thangnv2882.jobfastserver.application.constants.UrlConstant;
 import com.thangnv2882.jobfastserver.application.input.role.CreateRoleInput;
-import com.thangnv2882.jobfastserver.application.output.Output;
+import com.thangnv2882.jobfastserver.application.output.common.Output;
 import com.thangnv2882.jobfastserver.application.service.IRoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
@@ -48,4 +48,5 @@ public class RoleController {
     // Return output
     return VsResponseUtil.ok(output);
   }
+
 }

@@ -29,6 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   };
 
   private static final String[] AUTHENTICATION_LIST_URLS = {
+      "/api/v1/accounts/**",
       "/api/v1/categories/**",
       "/api/v1/cvs/**",
       "/api/v1/jobs/**",

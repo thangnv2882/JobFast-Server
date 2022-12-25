@@ -46,7 +46,7 @@ public class Account extends AbstractAuditingEntity {
     private String birthday;
 
     @Nationalized
-    private String experience;
+    private Integer experience;
 
     @Nationalized
     private String gender;
