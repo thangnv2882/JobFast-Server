@@ -14,20 +14,6 @@ import java.util.List;
 @Repository
 public interface IAccountRepository extends JpaRepository<Account, Long> {
 
-  @Query("select a " +
-      "from Account a "+
-      "where (:#{#findAccountInput.accountType} is null or a.accountType = :#{#findAccountInput.accountType})" +
-      "and (:#{#findAccountInput.jobPosition} is null or a.jobPosition like %:#{#findAccountInput.jobPosition}%)" +
-      "and (:#{#findAccountInput.experience} is null or a.experience >= :#{#findAccountInput.experience})" +
-      "and (:#{#findAccountInput.gender} is null or a.gender like %:#{#findAccountInput.gender}%)" +
-      "and (:#{#findAccountInput.address} is null or a.address like %:#{#findAccountInput.address}%)" +
-      "and a.deleteFlag = :isDeleteFlag and a.enable = :isEnable")
-  List<Account> findAllByAccountType(FindAccountInput findAccountInput,
-                                     PageRequest pageRequest,
-                                     Sort sort,
-                                     @Param("isDeleteFlag") Boolean isDeleteFlag,
-                                     @Param(("isEnable")) Boolean isEnable);
-
   @Query("select count(a) " +
       "from Account a " +
       "where (:#{#findAccountInput.accountType} is null or a.accountType = :#{#findAccountInput.accountType}) " +
@@ -36,9 +22,24 @@ public interface IAccountRepository extends JpaRepository<Account, Long> {
       "and (:#{#findAccountInput.gender} is null or a.gender like %:#{#findAccountInput.gender}%)" +
       "and (:#{#findAccountInput.address} is null or a.address like %:#{#findAccountInput.address}%)" +
       "and a.deleteFlag = :isDeleteFlag and a.enable = :isEnable")
-  int countAccountByAccountType(FindAccountInput findAccountInput,
-                                @Param("isDeleteFlag") Boolean isDeleteFlag,
-                                @Param(("isEnable")) Boolean isEnable);
+  Long countAccount(FindAccountInput findAccountInput,
+                    @Param("isDeleteFlag") Boolean isDeleteFlag,
+                    @Param(("isEnable")) Boolean isEnable);
+
+  @Query("select a " +
+      "from Account a " +
+      "where (:#{#findAccountInput.accountType} is null or a.accountType = :#{#findAccountInput.accountType})" +
+      "and (:#{#findAccountInput.jobPosition} is null or a.jobPosition like %:#{#findAccountInput.jobPosition}%)" +
+      "and (:#{#findAccountInput.experience} is null or a.experience >= :#{#findAccountInput.experience})" +
+      "and (:#{#findAccountInput.gender} is null or a.gender like %:#{#findAccountInput.gender}%)" +
+      "and (:#{#findAccountInput.address} is null or a.address like %:#{#findAccountInput.address}%)" +
+      "and a.deleteFlag = :isDeleteFlag and a.enable = :isEnable")
+  List<Account> findAll(FindAccountInput findAccountInput,
+                        PageRequest pageRequest,
+                        Sort sort,
+                        @Param("isDeleteFlag") Boolean isDeleteFlag,
+                        @Param(("isEnable")) Boolean isEnable);
+
 
   @Query("select a from Account a where a.email = ?1")
   Account findByEmail(String email);

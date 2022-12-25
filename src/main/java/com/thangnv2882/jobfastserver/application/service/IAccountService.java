@@ -16,9 +16,9 @@ public interface IAccountService {
 
   GetListAccountOutput findAllAccount(FindAccountInput findAccountInput);
 
-  GetAccountOutput getAccountById(Input input);
+  GetAccountOutput findAccountById(Input input);
 
-  GetAccountOutput getAccountByEmail(GetAccountByEmailInput getAccountByEmailInput);
+  GetAccountOutput findAccountByEmail(GetAccountByEmailInput getAccountByEmailInput);
 
   Output updateAccount(UpdateAccountInput input);
 
