@@ -45,6 +45,7 @@ public class UrlConstant {
     private static final String PRE_FIX = "/cvs";
     public static final String GET_ALL = PRE_FIX;
     public static final String GET = PRE_FIX + "/{idCV}";
+    public static final String GET_BY_ACCOUNT = PRE_FIX + "/account/{idAccount}";
     public static final String UPLOAD_CV = PRE_FIX + "/upload-cv";
     public static final String UPDATE = PRE_FIX;
     public static final String DELETE = PRE_FIX + "/{idCV}";
