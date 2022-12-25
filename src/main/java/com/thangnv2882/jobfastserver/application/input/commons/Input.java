@@ -1,4 +1,4 @@
-package com.thangnv2882.jobfastserver.application.input.account;
+package com.thangnv2882.jobfastserver.application.input.commons;
 
 import com.thangnv2882.jobfastserver.application.constants.MessageConstant;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetAccountByIdInput {
+public class Input {
 
   @NotNull(message = MessageConstant.INVALID_SOME_THING_FIELD_IS_REQUIRED)
   private Long id;
