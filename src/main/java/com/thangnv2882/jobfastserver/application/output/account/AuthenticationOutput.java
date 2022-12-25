@@ -1,4 +1,4 @@
-package com.thangnv2882.jobfastserver.application.output;
+package com.thangnv2882.jobfastserver.application.output.account;
 
 import com.thangnv2882.jobfastserver.domain.entity.Account;
 import lombok.AllArgsConstructor;
