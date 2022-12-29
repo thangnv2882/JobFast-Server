@@ -1,6 +1,7 @@
-package com.thangnv2882.jobfastserver.application.input.commons;
+package com.thangnv2882.jobfastserver.application.input.account;
 
 import com.thangnv2882.jobfastserver.application.constants.AccountType;
+import com.thangnv2882.jobfastserver.application.input.commons.PageMetaInput;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

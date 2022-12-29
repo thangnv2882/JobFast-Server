@@ -1,6 +1,6 @@
 package com.thangnv2882.jobfastserver.application.dai;
 
-import com.thangnv2882.jobfastserver.application.input.commons.FindAccountInput;
+import com.thangnv2882.jobfastserver.application.input.account.FindAccountInput;
 import com.thangnv2882.jobfastserver.domain.entity.Account;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
