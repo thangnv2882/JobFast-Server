@@ -1,6 +1,6 @@
 package com.thangnv2882.jobfastserver.domain.entity;
 
-import com.thangnv2882.jobfastserver.application.constants.JobDetailType;
+import com.thangnv2882.jobfastserver.application.constants.JobDetailTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +23,7 @@ public class JobDetail {
 
   private Boolean isPass = Boolean.FALSE;
 
-  private JobDetailType jobDetailType;
+  private JobDetailTypeEnum jobDetailType;
 
   private String cv;
 
@@ -37,7 +37,7 @@ public class JobDetail {
   @JoinColumn(name = "job_id")
   private Job job;
 
-  public JobDetail(Account account, Job job, JobDetailType jobDetailType, Boolean isApprove, Boolean isPass) {
+  public JobDetail(Account account, Job job, JobDetailTypeEnum jobDetailType, Boolean isApprove, Boolean isPass) {
     this.isApprove = isApprove;
     this.isPass = isPass;
     this.jobDetailType = jobDetailType;
@@ -45,7 +45,8 @@ public class JobDetail {
     this.job = job;
   }
 
-  public JobDetail(Account account, Job job, JobDetailType jobDetailType, Boolean isApprove, Boolean isPass, String cv) {
+  public JobDetail(Account account, Job job, JobDetailTypeEnum jobDetailType, Boolean isApprove, Boolean isPass,
+                   String cv) {
     this.isApprove = isApprove;
     this.isPass = isPass;
     this.jobDetailType = jobDetailType;

@@ -1,4 +1,4 @@
-package com.thangnv2882.jobfastserver.application.input.account;
+package com.thangnv2882.jobfastserver.application.input.job;
 
 import com.thangnv2882.jobfastserver.application.constants.MessageConstant;
 import com.thangnv2882.jobfastserver.application.utils.SecurityUtil;
@@ -13,28 +13,26 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateAccountInput {
+public class UpdateJobInput {
 
   @NotNull(message = MessageConstant.INVALID_SOME_THING_FIELD_IS_REQUIRED)
   private Long id;
 
-  private String name;
+  private String jobName;
 
-  private String phoneNumber;
+  private Double salary;
 
-  private String jobPosition;
+  private String jobType;
 
-  private String birthday;
+  private String jobDescription;
 
-  private String address;
+  private String jobRequirements;
 
-  private String avatar;
+  private String timeUp;
 
-  private Integer experience;
+  private int numberOfRecruitments;
 
-  private String about;
-
-  private String gender;
+  private Long categoryId;
 
   private String lastModifiedBy = SecurityUtil.getCurrentAccountLogin();
 
