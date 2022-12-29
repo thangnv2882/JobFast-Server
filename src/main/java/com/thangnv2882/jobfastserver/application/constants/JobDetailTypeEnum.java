@@ -1,6 +1,6 @@
 package com.thangnv2882.jobfastserver.application.constants;
 
-public enum JobDetailType {
+public enum JobDetailTypeEnum {
   APPLY, JOB
 }
 
