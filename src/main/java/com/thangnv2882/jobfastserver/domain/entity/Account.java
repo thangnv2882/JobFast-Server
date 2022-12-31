@@ -68,14 +68,13 @@ public class Account extends AbstractAuditingEntity {
     @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 
-//    link to table Rate
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
-    @JsonIgnore
-    private Set<Rate> Rate = new HashSet<>();
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
     @JsonIgnore
     private Set<CV> CVs = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
+    @JsonIgnore
+    private Set<Notification> notifications = new HashSet<>();
 
     public Account(String email, String password, String name, Set<Role> roles, boolean enable) {
         this.email = email;

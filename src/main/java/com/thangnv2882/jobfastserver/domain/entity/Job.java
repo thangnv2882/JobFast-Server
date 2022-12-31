@@ -46,23 +46,12 @@ public class Job extends AbstractAuditingEntity {
   @Nationalized
   private Integer numberOfRecruitments;
 
-
-  //    link to table JobDetail
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "job")
   @JsonIgnore
   private Set<JobDetail> jobDetails = new HashSet<>();
 
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "job")
-//    @JsonIgnore
-//    private Set<Comment> comments = new HashSet<>();
-
   @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
   @JoinColumn(name = "category_id")
   private Category category;
-
-  //    link to table Rate
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "job")
-  @JsonIgnore
-  private Set<Rate> Rate = new HashSet<>();
 
 }
