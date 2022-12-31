@@ -7,6 +7,7 @@ public class MessageConstant {
   public static final String ROLE_NOT_EXISTS = "Role not exists";
   public static final String CV_NOT_EXISTS = "CV not exists";
   public static final String CATEGORY_NOT_EXISTS = "Category not exists";
+  public static final String NOTIFICATION_NOT_EXISTS = "Notification not exists";
   public static final String JOB_DETAIL_NOT_EXISTS = "Job detail not exists";
   public static final String JOB_TYPE_NOT_EXISTS = "Job type not exists";
   public static final String NOT_ACCESS = "You do not have permission";
