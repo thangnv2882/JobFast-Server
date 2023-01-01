@@ -5,6 +5,7 @@ import com.thangnv2882.jobfastserver.adapter.web.base.VsResponseUtil;
 import com.thangnv2882.jobfastserver.application.constants.UrlConstant;
 import com.thangnv2882.jobfastserver.application.input.commons.Input;
 import com.thangnv2882.jobfastserver.application.input.notification.CreateNotificationInput;
+import com.thangnv2882.jobfastserver.application.input.notification.SendNotificationInput;
 import com.thangnv2882.jobfastserver.application.input.notification.UpdateNotificationInput;
 import com.thangnv2882.jobfastserver.application.output.common.Output;
 import com.thangnv2882.jobfastserver.application.service.INotificationService;
@@ -46,6 +47,15 @@ public class NotificationController {
   public ResponseEntity<?> createNotification(@Valid @RequestBody CreateNotificationInput input) {
     // Get output
     Output output = notificationService.createNotification(input);
+    // Return output
+    return VsResponseUtil.ok(output);
+  }
+
+  @Operation(summary = "API Send Notification")
+  @PatchMapping(UrlConstant.Notification.SEND)
+  public ResponseEntity<?> sendNotification(@Valid @RequestBody SendNotificationInput input) {
+    // Get output
+    Output output = notificationService.sendNotification(input);
     // Return output
     return VsResponseUtil.ok(output);
   }
