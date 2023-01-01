@@ -6,6 +6,7 @@ import com.thangnv2882.jobfastserver.application.dai.IAccountRepository;
 import com.thangnv2882.jobfastserver.application.dai.INotificationRepository;
 import com.thangnv2882.jobfastserver.application.input.commons.Input;
 import com.thangnv2882.jobfastserver.application.input.notification.CreateNotificationInput;
+import com.thangnv2882.jobfastserver.application.input.notification.SendNotificationInput;
 import com.thangnv2882.jobfastserver.application.input.notification.UpdateNotificationInput;
 import com.thangnv2882.jobfastserver.application.output.common.Output;
 import com.thangnv2882.jobfastserver.application.service.INotificationService;
@@ -15,8 +16,8 @@ import com.thangnv2882.jobfastserver.domain.entity.Notification;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class NotificationServiceImpl implements INotificationService {
@@ -39,19 +40,42 @@ public class NotificationServiceImpl implements INotificationService {
   }
 
   @Override
-  public List<Notification> findNotificationByAccount(Input input) {
-    List<Notification> notifications = notificationRepository.findAllByAccount(input.getId());
+  public Set<Notification> findNotificationByAccount(Input input) {
+    Optional<Account> account = accountRepository.findById(input.getId());
+    AuthServiceImpl.checkAccountExists(account);
+    Set<Notification> notifications = account.get().getNotifications();
+
     return notifications;
   }
 
   @Override
   public Output createNotification(CreateNotificationInput input) {
     Notification notification = modelMapper.map(input, Notification.class);
-    Optional<Account> account = accountRepository.findById(input.getAccountId());
-    AuthServiceImpl.checkAccountExists(account);
-    notification.setAccount(account.get());
+    if(input.getAccountId() != null) {
+      Optional<Account> account = accountRepository.findById(input.getAccountId());
+      AuthServiceImpl.checkAccountExists(account);
+      notification.setAccounts(Set.of(account.get()));
+    }
 
     notificationRepository.save(notification);
+    return new Output(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
+  }
+
+  @Override
+  public Output sendNotification(SendNotificationInput input) {
+    Optional<Notification> notification = notificationRepository.findById(input.getNotificationId());
+    checkNotificationExists(notification);
+    Set<Account> accounts = notification.get().getAccounts();
+    Optional<Account> account;
+    for (Long i : input.getAccountId()) {
+      account = accountRepository.findById(i);
+      if(!account.isEmpty()) {
+        accounts.add(account.get());
+      }
+    }
+    notification.get().setAccounts(accounts);
+    notificationRepository.save(notification.get());
+
     return new Output(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
 
@@ -74,7 +98,15 @@ public class NotificationServiceImpl implements INotificationService {
 
   @Override
   public Output readAllNotification(Input input) {
-    notificationRepository.readAllNotification(input.getId());
+    Optional<Account> account = accountRepository.findById(input.getId());
+    AuthServiceImpl.checkAccountExists(account);
+    Set<Notification> notifications = account.get().getNotifications();
+    for (Notification notification : notifications) {
+      if(notification.getIsRead() == Boolean.FALSE) {
+        notification.setIsRead(Boolean.TRUE);
+        notificationRepository.save(notification);
+      }
+    }
     return new Output(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
 

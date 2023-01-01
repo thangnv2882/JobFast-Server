@@ -88,7 +88,8 @@ public class UrlConstant {
     private static final String PRE_FIX = "/notifications";
     public static final String GET = PRE_FIX + "/{idNotification}";
     public static final String GET_BY_ACCOUNT = PRE_FIX + "/account/{idAccount}";
-    public static final String CREATE = PRE_FIX ;
+    public static final String CREATE = PRE_FIX;
+    public static final String SEND = PRE_FIX + "/send";
     public static final String READ = PRE_FIX + "/{idNotification}";
     public static final String READ_ALL = PRE_FIX + "/read/{idAccount}";
     public static final String UPDATE = PRE_FIX;

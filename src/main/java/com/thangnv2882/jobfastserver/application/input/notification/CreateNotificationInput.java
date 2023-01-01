@@ -28,7 +28,6 @@ public class CreateNotificationInput {
 
   private Boolean isRead = Boolean.FALSE;
 
-  @NotNull(message = MessageConstant.INVALID_SOME_THING_FIELD_IS_REQUIRED)
   private Long accountId;
 
   private String createdBy = SecurityUtil.getCurrentAccountLogin();

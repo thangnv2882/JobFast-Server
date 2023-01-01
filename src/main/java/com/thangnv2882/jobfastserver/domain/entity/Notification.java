@@ -1,5 +1,6 @@
 package com.thangnv2882.jobfastserver.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thangnv2882.jobfastserver.domain.entity.base.AbstractAuditingEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,8 @@ import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -26,8 +29,13 @@ public class Notification extends AbstractAuditingEntity {
 
   private Boolean isRead;
 
-  @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-  @JoinColumn(name = "account_id")
-  private Account account;
+  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @JoinTable(name = "account_notification",
+      joinColumns = @JoinColumn(name = "notification_id",
+          referencedColumnName = "id"),
+      inverseJoinColumns = @JoinColumn(name = "account_id",
+          referencedColumnName = "id"))
+  @JsonIgnore
+  private Set<Account> accounts = new HashSet<>();
 
 }

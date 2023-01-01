@@ -57,7 +57,6 @@ public class Account extends AbstractAuditingEntity {
     @JsonIgnore
     private Set<JobDetail> jobDetails = new HashSet<>();
 
-//    link to table Role
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     //phải để EAGER k thì sẽ lỗi "could not initialize proxy – no Session"
     @JoinTable(name = "account_role",
@@ -72,7 +71,8 @@ public class Account extends AbstractAuditingEntity {
     @JsonIgnore
     private Set<CV> CVs = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
+
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "accounts")
     @JsonIgnore
     private Set<Notification> notifications = new HashSet<>();
 
