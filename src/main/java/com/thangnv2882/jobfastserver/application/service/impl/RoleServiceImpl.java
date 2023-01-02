@@ -24,6 +24,12 @@ public class RoleServiceImpl implements IRoleService {
     this.modelMapper = modelMapper;
   }
 
+  public static void checkRoleExists(Optional<Role> role) {
+    if (role.isEmpty()) {
+      throw new NotFoundException(MessageConstant.ROLE_NOT_EXISTS);
+    }
+  }
+
   @Override
   public List<Role> getAll() {
     return roleRepository.findAll();
@@ -45,13 +51,7 @@ public class RoleServiceImpl implements IRoleService {
   public Output deleteRole(Long idRole) {
     Optional<Role> role = roleRepository.findById(idRole);
     checkRoleExists(role);
-    roleRepository.delete(role.get());
+    roleRepository.deleteById(idRole);
     return new Output(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
-  }
-
-  public static void checkRoleExists(Optional<Role> role) {
-    if (role.isEmpty()) {
-      throw new NotFoundException(MessageConstant.ROLE_NOT_EXISTS);
-    }
   }
 }
