@@ -3,10 +3,7 @@ package com.thangnv2882.jobfastserver.adapter.web.v1.controller;
 import com.thangnv2882.jobfastserver.adapter.web.base.RestApiV1;
 import com.thangnv2882.jobfastserver.adapter.web.base.VsResponseUtil;
 import com.thangnv2882.jobfastserver.application.constants.UrlConstant;
-import com.thangnv2882.jobfastserver.application.input.account.ChangeAvatarInput;
-import com.thangnv2882.jobfastserver.application.input.account.GetAccountByEmailInput;
-import com.thangnv2882.jobfastserver.application.input.account.UpdateAccountInput;
-import com.thangnv2882.jobfastserver.application.input.account.FindAccountInput;
+import com.thangnv2882.jobfastserver.application.input.account.*;
 import com.thangnv2882.jobfastserver.application.input.commons.Input;
 import com.thangnv2882.jobfastserver.application.output.account.GetAccountOutput;
 import com.thangnv2882.jobfastserver.application.output.account.GetListAccountOutput;
@@ -59,6 +56,24 @@ public class AccountController {
     GetAccountByEmailInput input = new GetAccountByEmailInput(email);
     // Get output
     GetAccountOutput output = accountService.findAccountByEmail(input);
+    // Return output
+    return VsResponseUtil.ok(output);
+  }
+
+  @Operation(summary = "API Add Role To Account")
+  @PatchMapping(UrlConstant.Account.ADD_ROLE)
+  public ResponseEntity<?> addRoleToAccount(@Valid @RequestBody RoleWithAccountInput input) {
+    // Get output
+    Output output = accountService.addRoleToAccount(input);
+    // Return output
+    return VsResponseUtil.ok(output);
+  }
+
+  @Operation(summary = "API Remove Role To Account")
+  @PatchMapping(UrlConstant.Account.REMOVE_ROLE)
+  public ResponseEntity<?> removeRoleToAccount(@Valid @RequestBody RoleWithAccountInput input) {
+    // Get output
+    Output output = accountService.removeRoleToAccount(input);
     // Return output
     return VsResponseUtil.ok(output);
   }

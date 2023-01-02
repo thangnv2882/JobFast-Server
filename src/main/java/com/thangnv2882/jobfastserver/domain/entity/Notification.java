@@ -29,7 +29,7 @@ public class Notification extends AbstractAuditingEntity {
 
   private Boolean isRead;
 
-  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
   @JoinTable(name = "account_notification",
       joinColumns = @JoinColumn(name = "notification_id",
           referencedColumnName = "id"),

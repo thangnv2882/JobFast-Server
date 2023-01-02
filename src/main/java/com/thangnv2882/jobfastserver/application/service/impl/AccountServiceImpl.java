@@ -4,10 +4,8 @@ import com.thangnv2882.jobfastserver.application.constants.AccountConstant;
 import com.thangnv2882.jobfastserver.application.constants.CommonConstant;
 import com.thangnv2882.jobfastserver.application.constants.MessageConstant;
 import com.thangnv2882.jobfastserver.application.dai.IAccountRepository;
-import com.thangnv2882.jobfastserver.application.input.account.ChangeAvatarInput;
-import com.thangnv2882.jobfastserver.application.input.account.GetAccountByEmailInput;
-import com.thangnv2882.jobfastserver.application.input.account.UpdateAccountInput;
-import com.thangnv2882.jobfastserver.application.input.account.FindAccountInput;
+import com.thangnv2882.jobfastserver.application.dai.IRoleRepository;
+import com.thangnv2882.jobfastserver.application.input.account.*;
 import com.thangnv2882.jobfastserver.application.input.commons.Input;
 import com.thangnv2882.jobfastserver.application.output.account.GetAccountOutput;
 import com.thangnv2882.jobfastserver.application.output.account.GetListAccountOutput;
@@ -20,6 +18,7 @@ import com.thangnv2882.jobfastserver.application.utils.SecurityUtil;
 import com.thangnv2882.jobfastserver.config.exception.NotFoundException;
 import com.thangnv2882.jobfastserver.config.exception.VsException;
 import com.thangnv2882.jobfastserver.domain.entity.Account;
+import com.thangnv2882.jobfastserver.domain.entity.Role;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -28,16 +27,20 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
 public class AccountServiceImpl implements IAccountService {
 
   private final IAccountRepository accountRepository;
+  private final IRoleRepository roleRepository;
   private final ModelMapper modelMapper;
 
-  public AccountServiceImpl(IAccountRepository accountRepository, ModelMapper modelMapper) {
+  public AccountServiceImpl(IAccountRepository accountRepository, IRoleRepository roleRepository,
+                            ModelMapper modelMapper) {
     this.accountRepository = accountRepository;
+    this.roleRepository = roleRepository;
     this.modelMapper = modelMapper;
   }
 
@@ -80,6 +83,36 @@ public class AccountServiceImpl implements IAccountService {
     }
     GetAccountOutput getAccountOutput = modelMapper.map(account, GetAccountOutput.class);
     return getAccountOutput;
+  }
+
+  @Override
+  public Output addRoleToAccount(RoleWithAccountInput input) {
+    Optional<Account> account = accountRepository.findById(input.getId());
+    AuthServiceImpl.checkAccountExists(account);
+    Role role = roleRepository.findByRoleName(input.getRoleName());
+    RoleServiceImpl.checkRoleExists(Optional.ofNullable(role));
+
+    Set<Account> accounts = role.getAccounts();
+    accounts.add(account.get());
+    role.setAccounts(accounts);
+
+    roleRepository.save(role);
+    return new Output(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
+  }
+
+  @Override
+  public Output removeRoleToAccount(RoleWithAccountInput input) {
+    Role role = roleRepository.findByRoleName(input.getRoleName());
+    RoleServiceImpl.checkRoleExists(Optional.ofNullable(role));
+    Set<Account> accounts = role.getAccounts();
+    for (Account account : accounts) {
+      if (account.getId() == input.getId()) {
+        accounts.remove(account);
+      }
+    }
+    role.setAccounts(accounts);
+    roleRepository.save(role);
+    return new Output(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
 
   @Override

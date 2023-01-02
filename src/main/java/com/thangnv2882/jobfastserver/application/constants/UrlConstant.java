@@ -6,6 +6,8 @@ public class UrlConstant {
     public static final String GET_ALL = PRE_FIX;
     public static final String GET_BY_ID = PRE_FIX + "/{idAccount}";
     public static final String GET_BY_EMAIL = PRE_FIX + "/email";
+    public static final String ADD_ROLE = PRE_FIX + "/add-role";
+    public static final String REMOVE_ROLE = PRE_FIX + "/remove-role";
     public static final String UPDATE = PRE_FIX;
     public static final String DELETE = PRE_FIX + "/{idAccount}";
     public static final String CHANGE_AVATAR = PRE_FIX + "/change-avatar";
@@ -84,6 +86,7 @@ public class UrlConstant {
     }
 
   }
+
   public static class Notification {
     private static final String PRE_FIX = "/notifications";
     public static final String GET = PRE_FIX + "/{idNotification}";

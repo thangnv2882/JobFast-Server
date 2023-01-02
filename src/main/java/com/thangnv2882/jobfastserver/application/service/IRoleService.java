@@ -15,4 +15,5 @@ public interface IRoleService {
   Output saveRole(CreateRoleInput input);
 
   Output deleteRole(Long idRole);
+
 }

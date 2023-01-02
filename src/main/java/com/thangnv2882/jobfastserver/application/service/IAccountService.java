@@ -1,9 +1,6 @@
 package com.thangnv2882.jobfastserver.application.service;
 
-import com.thangnv2882.jobfastserver.application.input.account.ChangeAvatarInput;
-import com.thangnv2882.jobfastserver.application.input.account.GetAccountByEmailInput;
-import com.thangnv2882.jobfastserver.application.input.account.UpdateAccountInput;
-import com.thangnv2882.jobfastserver.application.input.account.FindAccountInput;
+import com.thangnv2882.jobfastserver.application.input.account.*;
 import com.thangnv2882.jobfastserver.application.input.commons.Input;
 import com.thangnv2882.jobfastserver.application.output.account.GetAccountOutput;
 import com.thangnv2882.jobfastserver.application.output.account.GetListAccountOutput;
@@ -19,6 +16,10 @@ public interface IAccountService {
   GetAccountOutput findAccountById(Input input);
 
   GetAccountOutput findAccountByEmail(GetAccountByEmailInput getAccountByEmailInput);
+
+  Output addRoleToAccount(RoleWithAccountInput input);
+
+  Output removeRoleToAccount(RoleWithAccountInput input);
 
   Output updateAccount(UpdateAccountInput input);
 

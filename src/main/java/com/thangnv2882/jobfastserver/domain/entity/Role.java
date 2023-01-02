@@ -8,10 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,8 +24,12 @@ public class Role extends AbstractAuditingEntity {
   @NotBlank
   private String roleName;
 
-  //link to table Users
-  @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "roles")
+  @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  @JoinTable(name = "account_role",
+      joinColumns = @JoinColumn(name = "role_id",
+          referencedColumnName = "id"),
+      inverseJoinColumns = @JoinColumn(name = "account_id",
+          referencedColumnName = "id"))
   @JsonIgnore
   private Set<Account> accounts = new HashSet<>();
 

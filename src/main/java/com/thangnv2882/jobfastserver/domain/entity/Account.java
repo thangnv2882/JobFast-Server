@@ -20,68 +20,62 @@ import java.util.Set;
 @NoArgsConstructor
 public class Account extends AbstractAuditingEntity {
 
-    private String email;
+  private String email;
 
-    @JsonIgnore
-    private String password;
+  @JsonIgnore
+  private String password;
 
-    private AccountType accountType;
+  private AccountType accountType;
 
-    @Nationalized
-    private String name;
+  @Nationalized
+  private String name;
 
-    @Nationalized
-    private String about;
+  @Nationalized
+  private String about;
 
-    @Nationalized
-    private String address;
+  @Nationalized
+  private String address;
 
-    private String phoneNumber;
+  private String phoneNumber;
 
-    private String avatar;
+  private String avatar;
 
-    @Nationalized
-    private String jobPosition;
+  @Nationalized
+  private String jobPosition;
 
-    private String birthday;
+  private String birthday;
 
-    @Nationalized
-    private Integer experience;
+  @Nationalized
+  private Integer experience;
 
-    @Nationalized
-    private String gender;
+  @Nationalized
+  private String gender;
 
-    private boolean enable = false;
+  private boolean enable = false;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
-    @JsonIgnore
-    private Set<JobDetail> jobDetails = new HashSet<>();
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
+  @JsonIgnore
+  private Set<JobDetail> jobDetails = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    //phải để EAGER k thì sẽ lỗi "could not initialize proxy – no Session"
-    @JoinTable(name = "account_role",
-            joinColumns = @JoinColumn(name = "account_id",
-            referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id",
-                    referencedColumnName = "id"))
-    @JsonIgnore
-    private Set<Role> roles = new HashSet<>();
+  @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "accounts")
+  @JsonIgnore
+  private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
-    @JsonIgnore
-    private Set<CV> CVs = new HashSet<>();
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
+  @JsonIgnore
+  private Set<CV> CVs = new HashSet<>();
 
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "accounts")
-    @JsonIgnore
-    private Set<Notification> notifications = new HashSet<>();
+  @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "accounts")
+  @JsonIgnore
+  private Set<Notification> notifications = new HashSet<>();
 
-    public Account(String email, String password, String name, Set<Role> roles, boolean enable) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.roles = roles;
-        this.enable = enable;
-    }
+  public Account(String email, String password, String name, Set<Role> roles, boolean enable) {
+    this.email = email;
+    this.password = password;
+    this.name = name;
+    this.roles = roles;
+    this.enable = enable;
+  }
 
 }
