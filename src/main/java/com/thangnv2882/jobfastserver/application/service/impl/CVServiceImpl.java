@@ -15,7 +15,6 @@ import com.thangnv2882.jobfastserver.application.output.cv.GetListCVOutput;
 import com.thangnv2882.jobfastserver.application.service.ICVService;
 import com.thangnv2882.jobfastserver.application.utils.FileUtil;
 import com.thangnv2882.jobfastserver.application.utils.SecurityUtil;
-import com.thangnv2882.jobfastserver.config.exception.NotFoundException;
 import com.thangnv2882.jobfastserver.config.exception.VsException;
 import com.thangnv2882.jobfastserver.domain.entity.Account;
 import com.thangnv2882.jobfastserver.domain.entity.CV;
@@ -98,13 +97,9 @@ public class CVServiceImpl implements ICVService {
   public Output updateCV(UpdateCVInput input) {
     Optional<CV> cv = cvRepository.findById(input.getId());
     CVServiceImpl.checkCVExists(cv);
+    cv.get().setName(input.getName());
+    cvRepository.save(cv.get());
 
-    if (cv.get().getCreatedBy().compareTo(SecurityUtil.getCurrentAccountLogin()) == 0) {
-      cv.get().setName(input.getName());
-      cvRepository.save(cv.get());
-    } else {
-      throw new NotFoundException(MessageConstant.NOT_ACCESS);
-    }
     return new Output(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
 
@@ -112,12 +107,8 @@ public class CVServiceImpl implements ICVService {
   public Output deleteCV(Input input) {
     Optional<CV> cv = cvRepository.findById(input.getId());
     CVServiceImpl.checkCVExists(cv);
+    cvRepository.delete(cv.get());
 
-    if (cv.get().getCreatedBy().compareTo(SecurityUtil.getCurrentAccountLogin()) == 0) {
-      cvRepository.delete(cv.get());
-    } else {
-      throw new NotFoundException(MessageConstant.NOT_ACCESS);
-    }
     return new Output(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
 
