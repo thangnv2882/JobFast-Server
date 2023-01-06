@@ -12,6 +12,7 @@ import com.thangnv2882.jobfastserver.application.output.common.Output;
 import com.thangnv2882.jobfastserver.application.service.ICategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -43,6 +44,7 @@ public class CategoryController {
     return VsResponseUtil.ok(categoryService.findCategoryById(input));
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @Operation(summary = "API Create Category")
   @PostMapping(UrlConstant.Category.CREATE)
   public ResponseEntity<?> createCategory(@Valid @RequestBody CreateCategoryInput input) {
@@ -52,6 +54,7 @@ public class CategoryController {
     return VsResponseUtil.ok(output);
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @Operation(summary = "API Update Category")
   @PatchMapping(UrlConstant.Category.UPDATE)
   public ResponseEntity<?> updateCategory(@Valid @RequestBody UpdateCategoryInput input) {
@@ -61,6 +64,7 @@ public class CategoryController {
     return VsResponseUtil.ok(output);
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @Operation(summary = "API Delete Category")
   @DeleteMapping(UrlConstant.Category.DELETE)
   public ResponseEntity<?> deleteCategory(@PathVariable("idCategory") Long idCategory) {

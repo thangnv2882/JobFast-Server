@@ -14,6 +14,7 @@ import com.thangnv2882.jobfastserver.application.service.ICVService;
 import com.thangnv2882.jobfastserver.application.utils.UrlUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,7 @@ public class CVController {
     this.cvService = cvService;
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @Operation(summary = "API Get List CV")
   @GetMapping(UrlConstant.CV.GET_ALL)
   public ResponseEntity<?> getCVs(@RequestBody(required = false) PageMetaInput pageMetaInput) {
@@ -56,6 +58,7 @@ public class CVController {
     return VsResponseUtil.ok(cvService.findCVByAccount(input));
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @Operation(summary = "API Upload CV")
   @PostMapping(UrlConstant.CV.UPLOAD_CV)
   public ResponseEntity<?> uploadCV(@ModelAttribute UploadCVInput input,
@@ -72,6 +75,7 @@ public class CVController {
     return VsResponseUtil.ok(output);
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @Operation(summary = "API Update CV")
   @PatchMapping(UrlConstant.CV.UPDATE)
   public ResponseEntity<?> updateCV(@Valid @RequestBody UpdateCVInput input) {
@@ -81,6 +85,7 @@ public class CVController {
     return VsResponseUtil.ok(output);
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @Operation(summary = "API Delete CV")
   @DeleteMapping(UrlConstant.CV.DELETE)
   public ResponseEntity<?> deleteCV(@PathVariable("idCV") Long idCV) {
