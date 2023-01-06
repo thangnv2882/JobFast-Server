@@ -12,6 +12,7 @@ import com.thangnv2882.jobfastserver.application.output.job.GetListJobOutput;
 import com.thangnv2882.jobfastserver.application.service.IJobService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -49,6 +50,7 @@ public class JobController {
     return VsResponseUtil.ok(jobService.findJobOfUser());
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @Operation(summary = "API Create Job")
   @PostMapping(UrlConstant.Job.CREATE)
   public ResponseEntity<?> createJob(@Valid @RequestBody CreateJobInput input) {
@@ -58,6 +60,7 @@ public class JobController {
     return VsResponseUtil.ok(output);
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @Operation(summary = "API Update Job")
   @PatchMapping(UrlConstant.Job.UPDATE)
   public ResponseEntity<?> updateJob(@Valid @RequestBody UpdateJobInput updateJobInput) {
@@ -67,6 +70,7 @@ public class JobController {
     return VsResponseUtil.ok(output);
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @Operation(summary = "API Delete Job")
   @DeleteMapping(UrlConstant.Job.DELETE)
   public ResponseEntity<?> deleteJob(@PathVariable("idJob") Long idJob) {

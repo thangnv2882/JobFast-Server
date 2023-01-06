@@ -23,21 +23,6 @@ import org.springframework.web.cors.CorsConfiguration;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-  private static final String[] WHILE_LIST_URLS = {
-      "/api/v1/auth/**",
-      "/swagger-ui/index.html"
-  };
-
-  private static final String[] AUTHENTICATION_LIST_URLS = {
-      "/api/v1/accounts/**",
-      "/api/v1/categories/**",
-      "/api/v1/cvs/**",
-      "/api/v1/jobs/**",
-      "/api/v1/job-details/**",
-      "/api/v1/job-types/**",
-      "/api/v1/roles/**"
-  };
-
   private final MyUserDetailsService myUserDetailsService;
   private final JwtRequestFilter jwtRequestFilter;
 
@@ -62,8 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     http.cors().configurationSource(request -> corsConfiguration())
         .and().csrf().disable()
         .authorizeRequests()
-        .antMatchers(WHILE_LIST_URLS).permitAll()
-        .antMatchers(AUTHENTICATION_LIST_URLS).authenticated()
+        .anyRequest().permitAll()
         .and()
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

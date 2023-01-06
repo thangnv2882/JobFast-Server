@@ -13,6 +13,7 @@ import com.thangnv2882.jobfastserver.application.service.IAccountService;
 import com.thangnv2882.jobfastserver.application.utils.UrlUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -60,24 +61,7 @@ public class AccountController {
     return VsResponseUtil.ok(output);
   }
 
-  @Operation(summary = "API Add Role To Account")
-  @PatchMapping(UrlConstant.Account.ADD_ROLE)
-  public ResponseEntity<?> addRoleToAccount(@Valid @RequestBody RoleWithAccountInput input) {
-    // Get output
-    Output output = accountService.addRoleToAccount(input);
-    // Return output
-    return VsResponseUtil.ok(output);
-  }
-
-  @Operation(summary = "API Remove Role To Account")
-  @PatchMapping(UrlConstant.Account.REMOVE_ROLE)
-  public ResponseEntity<?> removeRoleToAccount(@Valid @RequestBody RoleWithAccountInput input) {
-    // Get output
-    Output output = accountService.removeRoleToAccount(input);
-    // Return output
-    return VsResponseUtil.ok(output);
-  }
-
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @Operation(summary = "API Update Account")
   @PatchMapping(UrlConstant.Account.UPDATE)
   public ResponseEntity<?> updateAccount(@Valid @RequestBody UpdateAccountInput input) {
@@ -87,6 +71,27 @@ public class AccountController {
     return VsResponseUtil.ok(output);
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @Operation(summary = "API Add Role To Account")
+  @PatchMapping(UrlConstant.Account.ADD_ROLE)
+  public ResponseEntity<?> addRoleToAccount(@Valid @RequestBody RoleWithAccountInput input) {
+    // Get output
+    Output output = accountService.addRoleToAccount(input);
+    // Return output
+    return VsResponseUtil.ok(output);
+  }
+
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @Operation(summary = "API Remove Role To Account")
+  @PatchMapping(UrlConstant.Account.REMOVE_ROLE)
+  public ResponseEntity<?> removeRoleToAccount(@Valid @RequestBody RoleWithAccountInput input) {
+    // Get output
+    Output output = accountService.removeRoleToAccount(input);
+    // Return output
+    return VsResponseUtil.ok(output);
+  }
+
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @Operation(summary = "API Delete Account")
   @DeleteMapping(UrlConstant.Account.DELETE)
   public ResponseEntity<?> deleteAccount(@PathVariable("idAccount") Long idAccount) {
@@ -98,6 +103,7 @@ public class AccountController {
     return VsResponseUtil.ok(output);
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @Operation(summary = "API Change Avatar")
   @PatchMapping(UrlConstant.Account.CHANGE_AVATAR)
   public ResponseEntity<?> changeAvatar(@RequestParam("file") MultipartFile file,

@@ -11,6 +11,7 @@ import com.thangnv2882.jobfastserver.application.output.common.Output;
 import com.thangnv2882.jobfastserver.application.service.INotificationService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,6 +25,7 @@ public class NotificationController {
     this.notificationService = notificationService;
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @Operation(summary = "API Get Notification By Id")
   @GetMapping(UrlConstant.Notification.GET)
   public ResponseEntity<?> getNotificationById(@PathVariable("idNotification") Long idNotification) {
@@ -33,6 +35,7 @@ public class NotificationController {
     return VsResponseUtil.ok(notificationService.findNotificationById(input));
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @Operation(summary = "API Get Notification By Account")
   @GetMapping(UrlConstant.Notification.GET_BY_ACCOUNT)
   public ResponseEntity<?> getNotificationByAccount(@PathVariable("idAccount") Long idAccount) {
@@ -42,6 +45,7 @@ public class NotificationController {
     return VsResponseUtil.ok(notificationService.findNotificationByAccount(input));
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @Operation(summary = "API Create Notification")
   @PostMapping(UrlConstant.Notification.CREATE)
   public ResponseEntity<?> createNotification(@Valid @RequestBody CreateNotificationInput input) {
@@ -51,6 +55,7 @@ public class NotificationController {
     return VsResponseUtil.ok(output);
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @Operation(summary = "API Send Notification")
   @PatchMapping(UrlConstant.Notification.SEND)
   public ResponseEntity<?> sendNotification(@Valid @RequestBody SendNotificationInput input) {
@@ -60,6 +65,7 @@ public class NotificationController {
     return VsResponseUtil.ok(output);
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @Operation(summary = "API Update Notification")
   @PatchMapping(UrlConstant.Notification.UPDATE)
   public ResponseEntity<?> updateNotification(@Valid @RequestBody UpdateNotificationInput input) {
@@ -69,6 +75,7 @@ public class NotificationController {
     return VsResponseUtil.ok(output);
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @Operation(summary = "API Read Notification")
   @PatchMapping(UrlConstant.Notification.READ)
   public ResponseEntity<?> readNotification(@PathVariable("idNotification") Long idNotification) {
@@ -80,6 +87,7 @@ public class NotificationController {
     return VsResponseUtil.ok(output);
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @Operation(summary = "API Read All Notification")
   @PatchMapping(UrlConstant.Notification.READ_ALL)
   public ResponseEntity<?> readAllNotification(@PathVariable("idAccount") Long idAccount) {
@@ -91,6 +99,7 @@ public class NotificationController {
     return VsResponseUtil.ok(output);
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @Operation(summary = "API Delete Notification")
   @DeleteMapping(UrlConstant.Notification.DELETE)
   public ResponseEntity<?> deleteNotification(@PathVariable("idNotification") Long idNotification) {
