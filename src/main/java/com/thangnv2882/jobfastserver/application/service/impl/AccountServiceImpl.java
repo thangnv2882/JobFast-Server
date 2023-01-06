@@ -1,6 +1,5 @@
 package com.thangnv2882.jobfastserver.application.service.impl;
 
-import com.thangnv2882.jobfastserver.application.constants.AccountConstant;
 import com.thangnv2882.jobfastserver.application.constants.CommonConstant;
 import com.thangnv2882.jobfastserver.application.constants.MessageConstant;
 import com.thangnv2882.jobfastserver.application.dai.IAccountRepository;
@@ -15,7 +14,6 @@ import com.thangnv2882.jobfastserver.application.output.common.UploadFileOutput;
 import com.thangnv2882.jobfastserver.application.service.IAccountService;
 import com.thangnv2882.jobfastserver.application.utils.FileUtil;
 import com.thangnv2882.jobfastserver.application.utils.SecurityUtil;
-import com.thangnv2882.jobfastserver.config.exception.NotFoundException;
 import com.thangnv2882.jobfastserver.config.exception.VsException;
 import com.thangnv2882.jobfastserver.domain.entity.Account;
 import com.thangnv2882.jobfastserver.domain.entity.Role;
@@ -119,13 +117,9 @@ public class AccountServiceImpl implements IAccountService {
   public Output updateAccount(UpdateAccountInput input) {
     Optional<Account> account = accountRepository.findById(input.getId());
     AuthServiceImpl.checkAccountExists(account);
+    modelMapper.map(input, account.get());
+    accountRepository.save(account.get());
 
-    if (account.get().getEmail().compareTo(SecurityUtil.getCurrentAccountLogin()) == 0) {
-      modelMapper.map(input, account.get());
-      accountRepository.save(account.get());
-    } else {
-      throw new NotFoundException(AccountConstant.NOT_ACCESS);
-    }
     return new Output(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
 
@@ -133,12 +127,9 @@ public class AccountServiceImpl implements IAccountService {
   public Output deleteAccount(Input input) {
     Optional<Account> account = accountRepository.findById(input.getId());
     AuthServiceImpl.checkAccountExists(account);
-    if (account.get().getEmail().compareTo(SecurityUtil.getCurrentAccountLogin()) == 0) {
-      account.get().setDeleteFlag(Boolean.TRUE);
-      accountRepository.save(account.get());
-    } else {
-      throw new NotFoundException(AccountConstant.NOT_ACCESS);
-    }
+    account.get().setDeleteFlag(Boolean.TRUE);
+    accountRepository.save(account.get());
+
     return new Output(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
 
