@@ -57,7 +57,12 @@ public class Account extends AbstractAuditingEntity {
   @JsonIgnore
   private Set<JobDetail> jobDetails = new HashSet<>();
 
-  @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "accounts")
+  @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+  @JoinTable(name = "account_role",
+      joinColumns = @JoinColumn(name = "account_id",
+          referencedColumnName = "id"),
+      inverseJoinColumns = @JoinColumn(name = "role_id",
+          referencedColumnName = "id"))
   @JsonIgnore
   private Set<Role> roles = new HashSet<>();
 
@@ -66,7 +71,7 @@ public class Account extends AbstractAuditingEntity {
   private Set<CV> CVs = new HashSet<>();
 
 
-  @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "accounts")
+  @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, mappedBy = "accounts")
   @JsonIgnore
   private Set<Notification> notifications = new HashSet<>();
 
