@@ -44,6 +44,7 @@ public class JobController {
     return VsResponseUtil.ok(jobService.findJobById(input));
   }
 
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
   @Operation(summary = "API Get Job Of User (APPLY and JOB)")
   @GetMapping(UrlConstant.Job.GET_BY_DETAIL_TYPE)
   public ResponseEntity<?> getJobOfUser() {
