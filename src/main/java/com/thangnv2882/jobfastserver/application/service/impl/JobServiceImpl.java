@@ -56,7 +56,6 @@ public class JobServiceImpl implements IJobService {
   @Override
   public Output createJob(CreateJobInput input) {
     Job job = modelMapper.map(input, Job.class);
-    System.out.println(job.getJobType());
     Optional<Category> category = categoryRepository.findById(input.getCategoryId());
     CategoryServiceImpl.checkCategoryExists(category);
     job.setCategory(category.get());

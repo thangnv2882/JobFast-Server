@@ -97,5 +97,4 @@ public class CVController {
     return VsResponseUtil.ok(output);
   }
 
-
 }

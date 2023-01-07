@@ -121,15 +121,20 @@ public class AuthServiceImpl implements IAuthService {
     modelMapper.map(input, account);
 
     account.setPassword(passwordEncoder.encode(input.getPassword()));
-    account.setAccountType(AccountType.CANDICATE);
 
-    if (input.getAccountType().compareTo(AccountType.COMPANY.toString()) == 0) {
-      account.setAccountType(AccountType.COMPANY);
-    } else if (input.getAccountType().compareTo(AccountType.CANDICATE.toString()) == 0) {
-      account.setAccountType(AccountType.CANDICATE);
-    } else {
-      throw new NotFoundException(MessageConstant.ACCOUNT_TYPE_NOT_EXIST);
+    for(AccountType accountType : AccountType.values()) {
+      if(accountType.toString().compareTo(input.getAccountType()) == 0) {
+        account.setAccountType(accountType);
+      }
     }
+
+//    if (input.getAccountType().compareTo(AccountType.COMPANY.toString()) == 0) {
+//      account.setAccountType(AccountType.COMPANY);
+//    } else if (input.getAccountType().compareTo(AccountType.CANDICATE.toString()) == 0) {
+//      account.setAccountType(AccountType.CANDICATE);
+//    } else {
+//      throw new NotFoundException(MessageConstant.ACCOUNT_TYPE_NOT_EXIST);
+//    }
 
     publisher.publishEvent(new RegistrationCompleteEvent(
         account,
