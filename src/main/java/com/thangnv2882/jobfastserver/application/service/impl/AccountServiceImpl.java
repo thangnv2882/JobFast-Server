@@ -90,26 +90,31 @@ public class AccountServiceImpl implements IAccountService {
     Role role = roleRepository.findByRoleName(input.getRoleName());
     RoleServiceImpl.checkRoleExists(Optional.ofNullable(role));
 
-    Set<Account> accounts = role.getAccounts();
-    accounts.add(account.get());
-    role.setAccounts(accounts);
+    Set<Role> roles = account.get().getRoles();
+    if(!roles.contains(role)) {
+      roles.add(role);
+      account.get().setRoles(roles);
+      accountRepository.save(account.get());
+    }
 
-    roleRepository.save(role);
     return new Output(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
 
   @Override
   public Output removeRoleToAccount(RoleWithAccountInput input) {
-    Role role = roleRepository.findByRoleName(input.getRoleName());
-    RoleServiceImpl.checkRoleExists(Optional.ofNullable(role));
-    Set<Account> accounts = role.getAccounts();
-    for (Account account : accounts) {
-      if (account.getId() == input.getId()) {
-        accounts.remove(account);
+    Optional<Account> account = accountRepository.findById(input.getId());
+    AuthServiceImpl.checkAccountExists(account);
+
+    Set<Role> roles = account.get().getRoles();
+    System.out.println(roles);
+    for (Role role : roles) {
+      if (role.getRoleName().compareTo(input.getRoleName()) == 0) {
+        roles.remove(role);
       }
     }
-    role.setAccounts(accounts);
-    roleRepository.save(role);
+    account.get().setRoles(roles);
+    accountRepository.save(account.get());
+
     return new Output(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
   }
 

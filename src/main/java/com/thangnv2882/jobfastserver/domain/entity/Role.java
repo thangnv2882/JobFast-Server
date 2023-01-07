@@ -24,12 +24,7 @@ public class Role extends AbstractAuditingEntity {
   @NotBlank
   private String roleName;
 
-  @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-  @JoinTable(name = "account_role",
-      joinColumns = @JoinColumn(name = "role_id",
-          referencedColumnName = "id"),
-      inverseJoinColumns = @JoinColumn(name = "account_id",
-          referencedColumnName = "id"))
+  @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, mappedBy = "roles")
   @JsonIgnore
   private Set<Account> accounts = new HashSet<>();
 
