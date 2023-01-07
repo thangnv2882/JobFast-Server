@@ -1,4 +1,6 @@
 # JobFast-Server
 <h3>Link Swagger: </h3>
-<h3>Database Design</h3>
-![db](https://user-images.githubusercontent.com/88085753/211144242-1ca51725-fd44-4a8b-aa18-d0096fb9152c.jpg)
+<h3>Database Design:</h3>
+
+<img src="https://user-images.githubusercontent.com/88085753/211143999-f704a15a-163d-475d-8d5d-4cef46970f46.jpg" width="800">
+
