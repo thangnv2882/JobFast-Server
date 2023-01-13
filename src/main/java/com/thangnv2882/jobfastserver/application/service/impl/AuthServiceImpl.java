@@ -5,14 +5,13 @@ import com.thangnv2882.jobfastserver.application.dai.IAccountRepository;
 import com.thangnv2882.jobfastserver.application.dai.IPasswordResetTokenRepository;
 import com.thangnv2882.jobfastserver.application.dai.IRoleRepository;
 import com.thangnv2882.jobfastserver.application.dai.IVerificationTokenRepository;
-import com.thangnv2882.jobfastserver.application.event.RegistrationCompleteEvent;
-import com.thangnv2882.jobfastserver.application.event.ResetPasswordCompleteEvent;
 import com.thangnv2882.jobfastserver.application.input.auth.AuthenticationRequest;
 import com.thangnv2882.jobfastserver.application.input.auth.SignUpInput;
 import com.thangnv2882.jobfastserver.application.input.auth.UpdatePasswordInput;
 import com.thangnv2882.jobfastserver.application.output.account.AuthenticationOutput;
 import com.thangnv2882.jobfastserver.application.output.common.Output;
 import com.thangnv2882.jobfastserver.application.service.IAuthService;
+import com.thangnv2882.jobfastserver.application.service.ISendMailService;
 import com.thangnv2882.jobfastserver.application.utils.JwtTokenUtil;
 import com.thangnv2882.jobfastserver.application.utils.UrlUtil;
 import com.thangnv2882.jobfastserver.config.exception.NotFoundException;
@@ -22,7 +21,6 @@ import com.thangnv2882.jobfastserver.domain.entity.PasswordResetToken;
 import com.thangnv2882.jobfastserver.domain.entity.Role;
 import com.thangnv2882.jobfastserver.domain.entity.VerificationToken;
 import org.modelmapper.ModelMapper;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,30 +29,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class AuthServiceImpl implements IAuthService {
 
   private final IAccountRepository accountRepository;
-
   private final IRoleRepository roleRepository;
-
   private final IVerificationTokenRepository verificationTokenRepository;
   private final IPasswordResetTokenRepository passwordResetTokenRepository;
-
-  private final ApplicationEventPublisher publisher;
   private final AuthenticationManager authenticationManager;
-
   private final MyUserDetailsService myUserDetailsService;
-
   private final PasswordEncoder passwordEncoder;
   private final JwtTokenUtil jwtTokenUtil;
-
-
+  private final ISendMailService sendMailService;
   private final HttpServletRequest request;
   private final ModelMapper modelMapper;
 
@@ -62,19 +50,20 @@ public class AuthServiceImpl implements IAuthService {
   public AuthServiceImpl(IAccountRepository accountRepository, IRoleRepository roleRepository,
                          IVerificationTokenRepository verificationTokenRepository,
                          IPasswordResetTokenRepository passwordResetTokenRepository,
-                         ApplicationEventPublisher publisher, AuthenticationManager authenticationManager,
+                         AuthenticationManager authenticationManager,
                          MyUserDetailsService myUserDetailsService,
-                         PasswordEncoder passwordEncoder, JwtTokenUtil jwtTokenUtil, HttpServletRequest request,
+                         PasswordEncoder passwordEncoder, JwtTokenUtil jwtTokenUtil, ISendMailService sendMailService
+      , HttpServletRequest request,
                          ModelMapper modelMapper) {
     this.accountRepository = accountRepository;
     this.roleRepository = roleRepository;
     this.verificationTokenRepository = verificationTokenRepository;
     this.passwordResetTokenRepository = passwordResetTokenRepository;
-    this.publisher = publisher;
     this.authenticationManager = authenticationManager;
     this.myUserDetailsService = myUserDetailsService;
     this.passwordEncoder = passwordEncoder;
     this.jwtTokenUtil = jwtTokenUtil;
+    this.sendMailService = sendMailService;
     this.request = request;
     this.modelMapper = modelMapper;
   }
@@ -122,26 +111,37 @@ public class AuthServiceImpl implements IAuthService {
 
     account.setPassword(passwordEncoder.encode(input.getPassword()));
 
-    for(AccountType accountType : AccountType.values()) {
-      if(accountType.toString().compareTo(input.getAccountType()) == 0) {
+    for (AccountType accountType : AccountType.values()) {
+      if (accountType.toString().compareTo(input.getAccountType()) == 0) {
         account.setAccountType(accountType);
       }
     }
 
-//    if (input.getAccountType().compareTo(AccountType.COMPANY.toString()) == 0) {
-//      account.setAccountType(AccountType.COMPANY);
-//    } else if (input.getAccountType().compareTo(AccountType.CANDICATE.toString()) == 0) {
-//      account.setAccountType(AccountType.CANDICATE);
-//    } else {
-//      throw new NotFoundException(MessageConstant.ACCOUNT_TYPE_NOT_EXIST);
-//    }
+    String token = UUID.randomUUID().toString();
 
-    publisher.publishEvent(new RegistrationCompleteEvent(
-        account,
+    accountRepository.save(account);
+    saveVerificationTokenForAccount(account, token);
+
+    // Send Mail to Account
+    String url =
         UrlUtil.applicationUrl(request)
-    ));
+            + "/api/v1"
+            + UrlConstant.Auth.VERIFY_SIGNUP
+            + "?token=" + token;
 
-    return new Output(CommonConstant.TRUE, CommonConstant.EMPTY_STRING);
+    //sendVericationEmail
+    String contentAccount = EmailConstant.CONTENT
+        + ".\n\nTo activate your account, please click this link: " + url
+        + ".\nThe link is valid for 24 hours"
+        + ".\n\nThank you for using our service.";
+
+    try {
+      sendMailService.sendMailWithText(EmailConstant.SUBJECT_ACTIVE, contentAccount, account.getEmail());
+    } catch (Exception e) {
+      throw new NotFoundException(EmailConstant.SEND_FAILED);
+    }
+
+    return new Output(CommonConstant.TRUE, EmailConstant.SENT_SUCCESSFULLY);
   }
 
   @Override
@@ -185,8 +185,31 @@ public class AuthServiceImpl implements IAuthService {
   public Output createPasswordResetTokenForAccount(String email) {
     Account account = accountRepository.findByEmail(email);
     AuthServiceImpl.checkAccountExists(Optional.ofNullable(account));
-    publisher.publishEvent(new ResetPasswordCompleteEvent(account, UrlUtil.applicationUrl(request)));
-    return new Output(CommonConstant.TRUE, CommonConstant.SUCCESS);
+
+    String token = UUID.randomUUID().toString();
+
+    saveVerificationTokenResetPassword(account, token);
+
+    // Send Mail to Account
+    String url =
+        UrlUtil.applicationUrl(request)
+            + "/api/v1"
+            + UrlConstant.Auth.VERIFY_RESET_PASSWORD
+            + "?token=" + token;
+
+    //sendVericationPasswordEmail
+    String contentAccount =
+        "We have received your request to forget your password"
+            + ".\n\nTo confirm the password change, please click the following link: " + url
+            + ".\n\nThank you for using our service.";
+
+    try {
+      sendMailService.sendMailWithText(EmailConstant.SUBJECT_RESET_PASSWORD, contentAccount, account.getEmail());
+    } catch (Exception e) {
+      throw new NotFoundException(EmailConstant.SEND_FAILED);
+    }
+
+    return new Output(CommonConstant.TRUE, EmailConstant.SENT_SUCCESSFULLY);
   }
 
   @Override
