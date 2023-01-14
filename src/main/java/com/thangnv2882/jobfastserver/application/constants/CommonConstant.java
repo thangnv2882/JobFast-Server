@@ -1,6 +1,13 @@
 package com.thangnv2882.jobfastserver.application.constants;
 
+import java.text.SimpleDateFormat;
+
 public class CommonConstant {
+
+  public static final String FORMAT_DATE_PATTERN = "dd/MM/yyyy";
+  public static final SimpleDateFormat FORMAT_DATE = new SimpleDateFormat(FORMAT_DATE_PATTERN);
+  public static final String FORMAT_DATE_DETAIL_PATTERN = "dd/MM/yyyy HH:mm:ss";
+  public static final SimpleDateFormat FORMAT_DATE_DETAIL = new SimpleDateFormat(FORMAT_DATE_DETAIL_PATTERN);
 
   public static final String EMPTY_STRING = "";
   public static final boolean TRUE = true;

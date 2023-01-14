@@ -6,8 +6,10 @@ import com.thangnv2882.jobfastserver.application.output.account.GetAccountOutput
 import com.thangnv2882.jobfastserver.application.output.account.GetListAccountOutput;
 import com.thangnv2882.jobfastserver.application.output.common.Output;
 import com.thangnv2882.jobfastserver.application.output.common.UploadFileOutput;
+import com.thangnv2882.jobfastserver.domain.entity.Account;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface IAccountService {
 
@@ -26,5 +28,7 @@ public interface IAccountService {
   Output deleteAccount(Input input);
 
   UploadFileOutput changeAvatar(ChangeAvatarInput input) throws IOException;
+
+  List<Account> findAllAccountByBirthday(String birthday);
 
 }
