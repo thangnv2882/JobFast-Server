@@ -153,4 +153,9 @@ public class AccountServiceImpl implements IAccountService {
     return new UploadFileOutput(CommonConstant.TRUE, CommonConstant.EMPTY_STRING, pathImage);
   }
 
+  @Override
+  public List<Account> findAllAccountByBirthday(String birthday) {
+    return accountRepository.findAllByBirthdayAndActiveFlagAndDeleteFlag(birthday, Boolean.TRUE, Boolean.FALSE);
+  }
+
 }

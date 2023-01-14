@@ -41,6 +41,10 @@ public interface IAccountRepository extends JpaRepository<Account, Long> {
                         @Param(("isEnable")) Boolean isEnable);
 
 
+
+  @Query("select a from Account a where a.birthday = ?1 and a.activeFlag = ?2 and a.deleteFlag = ?3")
+  List<Account> findAllByBirthdayAndActiveFlagAndDeleteFlag(String birthday, boolean activeFlag, boolean deleteFlag);
+
   @Query("select a from Account a where a.email = ?1")
   Account findByEmail(String email);
 
